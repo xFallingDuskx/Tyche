@@ -1,11 +1,17 @@
 import { useState } from 'react'
 import signUpUser from '../firebase/auth/signUp'
 import signInUser from '../firebase/auth/signIn'
+import './WelcomePage.css'
 
 
 const WelcomePage = () => {
     const [hasAccount, setHasAccount] = useState(true)
-    const [error, setError] = useState("")
+    const [error, setError] = useState('')
+
+    const handleSwitch = () => {
+        setHasAccount(!hasAccount)
+        setError('')
+    }
 
     const handleSignIn = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -22,7 +28,6 @@ const WelcomePage = () => {
                     setError(error)
                     console.log('Failed to log in:', response.error)
                 } else {
-                    alert('successfullt logged in!')
                     document.location = '/home'
                 }
             })
@@ -55,7 +60,6 @@ const WelcomePage = () => {
                     setError(error)
                     console.log('Failed to sign up:', response.error)
                 } else {
-                    alert('successfully signed up!')
                     document.location = '/home'
                 }
             })
@@ -67,10 +71,11 @@ const WelcomePage = () => {
             <form onSubmit={handleSignIn}>
                 <input type='email' id='email' placeholder='Email Address'/>
                 <input type='password' id='password' placeholder='Password'/>
+                {error ? <small className='error'> {error} </small> : null}
                 <button type='submit'> Login </button>
             </form>
             <br />
-            <small>Don't have an account? <span onClick={() => setHasAccount(false)}>Create one today!</span> </small>
+            <small>Don't have an account? <span onClick={handleSwitch}>Create one today!</span> </small>
         </div>
     )
 
@@ -80,20 +85,23 @@ const WelcomePage = () => {
                 <input type='email' id='email' placeholder='Email Address'/>
                 <input type='password' id='password' placeholder='Password'/>
                 <input type='password' id='confirmPassword' placeholder='Confirm Password'/>
+                {error ? <small className='error'> {error} </small> : null}
                 <button type='submit'> Sign Up </button>
             </form>
             <br />
-            <small>Already have an account? <span onClick={() => setHasAccount(true)}>Login to get back started</span> </small>
+            <small>Already have an account? <span onClick={handleSwitch}>Sign In!</span> </small>
         </div>
     )
 
     return (
-        <div>
-            <h1> Welcome to Tyche!</h1>
-            <h2> The place to manage your finances in a way that's not boring </h2>
+        <div id='main-container' className='self-start h-fit mx-auto text-center'>
+            <img className='w-48 mx-auto my-5' src='/tyche-icon-temp.svg' alt='site-logo' />
+            <h1 className='brand text-8xl mb-2 text-gradient from-black to-red-500 py-2'> Tyche </h1>
+            <h2 className='text-xl text-gray-600 mb-16'> your bestfriend here to help manage your finances </h2>
+            {/* <img className='w-48 mx-auto my-8' src='/tyche-icon-temp.svg' alt='site-logo' /> */}
             <br />
             {hasAccount ? signinForm : signupForm}
-            {error ? <small> {error} </small> : null}
+            {/* {error ? <small className='error'> {error} </small> : null} */}
         </div>
     )
 }

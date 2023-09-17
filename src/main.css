@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body {
+  margin: 0;
+  height: 100%;
+}
+
+body, #root {
+  padding: 1px;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  box-sizing: border-box;
+  transition: 0.25s;
+  outline: none;
+}
+
+button {
+  border-radius: 5px;
+  transition: 0.25s;
+}
+
+.brand {
+  /* font-family: 'Dancing Script', cursive; */
+  font-family: 'DM Serif Display', "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+  "Lucida Sans", sans-serif;
+  font-weight: bold;
+}
+
+.text-gradient {
+  background-image: linear-gradient(to right, var(--tw-gradient-stops));
+  color: transparent;
+  background-clip: text;
+}
+
+.error {
+  color: rgb(193, 0, 0);
+}
+
+#root {
+  height: 100%;
+  padding-inline: 1rem;
+  display: flex;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", sans-serif;
+}

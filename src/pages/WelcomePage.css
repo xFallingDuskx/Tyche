@@ -1,0 +1,49 @@
+form {
+    display: flex;
+    flex-direction: column;
+}
+
+form input {
+    margin: 1.25rem;
+    border-bottom: 2px solid white;
+}
+
+input:focus {
+    border-bottom: 2px solid darkred;
+}
+
+form button {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+form button {
+    width: fit-content;
+    margin-inline: auto;
+    padding: 0.25rem 0.75rem;
+    font-size: 1.125rem;
+    line-height: 1.75rem;
+}
+
+form button:hover {
+    color: whitesmoke;
+    background-color: darkred;
+}
+
+div small {
+    font-size: 1rem;
+    line-height: 1.5rem;
+}
+
+small {
+    margin-bottom: 20px;
+}
+
+span {
+    color: darkred;
+}
+
+span:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
