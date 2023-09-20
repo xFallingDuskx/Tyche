@@ -45,13 +45,57 @@ button {
   @apply items-center box-border text-[#111] cursor-pointer flex text-base h-12 justify-center leading-6 max-w-full relative text-center no-underline select-none touch-manipulation px-[25px] py-0 mb-2 rounded-lg border-2 border-solid border-[#111] after:bg-[#111] after:content-[""] after:block after:h-12 after:w-full after:absolute after:translate-x-2 after:translate-y-2 after:transition-transform after:duration-[0.2s] after:ease-[ease-out] after:z-[-1] after:rounded-lg after:left-0 after:-top-0.5 hover:after:translate-x-0 hover:after:translate-y-0 md:px-10 md:py-0;
 }
 
+.animated-btn-2 {
+  @apply shadow-[#422800_4px_4px_0_0] text-[#422800] cursor-pointer inline-block font-semibold text-lg leading-[50px] text-center no-underline select-none touch-manipulation px-[18px] py-0 rounded-[30px] border-2 border-solid border-[#422800] hover:bg-white active:shadow-[#422800_2px_2px_0_0] active:translate-x-0.5 active:translate-y-0.5 md:min-w-[120px] md:px-[25px] md:py-0;
+}
+
+.checkbox-wrapper-1 input[type="checkbox"] {
+  @apply hidden invisible;
+}
+.checkbox-wrapper-1 label {
+  @apply relative leading-loose cursor-pointer inline-flex pl-[2em] pr-[1em] before:box-border before:content-["_"] before:absolute before:block before:w-[1.4em] before:h-[1.4em] before:z-[-1] before:rounded-md before:border-2 before:border-solid before:border-[#9098A9] before:left-0 before:top-[0.3em];
+}
+.checkbox-wrapper-1 input[type="checkbox"]:checked + label {
+  @apply text-[#0f5229] pl-[1em];
+}
+.checkbox-wrapper-1 input[type="checkbox"]:checked + label:before {
+  @apply w-full h-[2em] border-[#2cbc63] top-0 bg-green-200;
+  /* background: #b7e6c9; */
+}
+.checkbox-wrapper-1 label,
+.checkbox-wrapper-1 label::before {
+  @apply transition-[0.25s] duration-[all] ease-[ease];
+}
+
 .error {
   color: rgb(193, 0, 0);
 }
 
+#main-container > .scroll-container {
+  @apply px-4 py-1 h-max overflow-auto;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.tooltip-r {
+  @apply relative inline-block;
+}
+.tooltip-r .tooltip-text {
+  @apply hidden w-[140px] text-center absolute z-[1] top-[-5px] ml-2 px-2 py-[5px] rounded-md left-[105%];
+}
+.tooltip-r:hover .tooltip-text {
+  @apply block;
+}
+
 #root {
   height: 100%;
-  padding-inline: 1rem;
   display: flex;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", sans-serif;

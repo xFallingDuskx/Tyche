@@ -9,6 +9,11 @@ const HomePage = () => {
         return
     }
 
+    if (currentUser.displayName === null) {
+        document.location = '/welcome'
+        return
+    }
+
     const handleSignOut = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         const promise = signOutUser()
