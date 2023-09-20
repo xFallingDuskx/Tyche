@@ -2,12 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html,
+body {
   margin: 0;
   height: 100%;
 }
 
-body, #root {
+body,
+#root {
   padding: 1px;
   font-size: 1rem;
   line-height: 1.5rem;
@@ -28,8 +30,8 @@ button {
 
 .brand {
   /* font-family: 'Dancing Script', cursive; */
-  font-family: 'DM Serif Display', "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
-  "Lucida Sans", sans-serif;
+  font-family: "DM Serif Display", "Trebuchet MS", "Lucida Sans Unicode",
+    "Lucida Grande", "Lucida Sans", sans-serif;
   font-weight: bold;
 }
 
@@ -37,6 +39,10 @@ button {
   background-image: linear-gradient(to right, var(--tw-gradient-stops));
   color: transparent;
   background-clip: text;
+}
+
+.animated-btn-1 {
+  @apply items-center box-border text-[#111] cursor-pointer flex text-base h-12 justify-center leading-6 max-w-full relative text-center no-underline select-none touch-manipulation px-[25px] py-0 mb-2 rounded-lg border-2 border-solid border-[#111] after:bg-[#111] after:content-[""] after:block after:h-12 after:w-full after:absolute after:translate-x-2 after:translate-y-2 after:transition-transform after:duration-[0.2s] after:ease-[ease-out] after:z-[-1] after:rounded-lg after:left-0 after:-top-0.5 hover:after:translate-x-0 hover:after:translate-y-0 md:px-10 md:py-0;
 }
 
 .error {
