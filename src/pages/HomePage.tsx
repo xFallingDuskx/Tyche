@@ -1,10 +1,11 @@
 import { useAuth } from '../contexts/AuthContext'
-import signOutUser from '../firebase/auth/signOut'
+import getFinancialAreas from '../actions/getFinancialAreas'
+import TopBar from '../components/TopBar'
 
 
 const HomePage = () => {
     const { currentUser } = useAuth()
-    if (! currentUser) {
+    if (!currentUser) {
         document.location = '/'
         return
     }
@@ -14,28 +15,24 @@ const HomePage = () => {
         return
     }
 
-    const handleSignOut = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.preventDefault()
-        const promise = signOutUser()
-        promise
-            .then(response => {
-                if (! response.error) {
-                    document.location = '/home'
-                }
-            })
-    }
+    // TODO: only fetch if needed - use to design initial dashboards 
+    const userFinancialAreas = getFinancialAreas()
 
     const content = (
-        <div id='main-container' className='h-screen w-full flex flex-col'>
-            <button onClick={handleSignOut} className='self-start mt-3 p-1 animated-btn-1 bg-red-300'>Sign Out</button>
+        <div id='main-container' className='h-screen w-full flex flex-col p-0'>
+            {/* TODO: add user Snapshot and all GeneralDashboar components here */}
+            <TopBar />
             <p>Your email is {currentUser.email}</p>
+            {/* TODO: create PageSelection component that will permanently be placed at the bottom. it will allow users
+                      to switch between their snapshot and dashboards.
+             */}
         </div>
     )
 
     return (
         <>
             {currentUser ? content : null}
-        </> 
+        </>
     )
 }
 
