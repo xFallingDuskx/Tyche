@@ -1,0 +1,17 @@
+#topbar-screen {
+    display: none;
+}
+
+#topbar-mobile {
+    display: flex;
+}
+
+@media only screen and (min-width: 768px) {
+    #topbar-screen {
+        display: flex;
+    }
+
+    #topbar-mobile {
+        display: none;
+    }
+}
