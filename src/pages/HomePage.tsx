@@ -1,6 +1,7 @@
 import { useAuth } from '../contexts/AuthContext'
 import getFinancialAreas from '../actions/getFinancialAreas'
 import TopBar from '../components/TopBar'
+import Snapshot from '../components/Snapshot'
 
 
 const HomePage = () => {
@@ -22,7 +23,7 @@ const HomePage = () => {
         <div id='main-container' className='h-screen w-full flex flex-col p-0'>
             {/* TODO: add user Snapshot and all GeneralDashboar components here */}
             <TopBar />
-            <p>Your email is {currentUser.email}</p>
+            <Snapshot />
             {/* TODO: create PageSelection component that will permanently be placed at the bottom. it will allow users
                       to switch between their snapshot and dashboards.
              */}

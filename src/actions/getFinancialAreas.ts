@@ -4,7 +4,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { db } from '../firebase/config'
 
 
-async function fetch() {
+export default async function getFinancialAreas() {
     const { currentUser } = useAuth()
 
     let result = null, error = null
@@ -12,7 +12,7 @@ async function fetch() {
         try {
             const pathRef = ref(db, 'users/' + currentUser.uid + '/financialAreas')
             const snapshot = await get(pathRef)
-            result = snapshot.val();
+            result = snapshot.val(); 
         } catch (e) {
             error = e as FirebaseError
             console.error('error getting financial areas:', error.message)
@@ -20,16 +20,5 @@ async function fetch() {
     }
 
     return { result, error }
-}
-
-export default function getFinancialAreas() {
-    const promise = fetch()
-    let res:string[] = []
-    promise
-        .then(response => {
-            if (response.result) {
-                res = (response.result as string[])
-            }
-        })
-    return res
+    
 }

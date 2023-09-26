@@ -94,9 +94,35 @@ button {
   @apply block;
 }
 
+.flat-to-stack {
+  @apply flex flex-col
+}
+
+.flat-to-stack > .fts-half-content {
+  @apply w-full
+}
+
+#main-container {
+  @apply p-3
+}
+
 #root {
   height: 100%;
   display: flex;
   font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
     "Lucida Sans", sans-serif;
+}
+
+@media only screen and (min-width: 768px) {
+  .flat-to-stack {
+    @apply flex flex-row
+  }
+
+  .flat-to-stack > .fts-half-content {
+    @apply w-1/2
+  }
+
+  #main-container {
+    @apply p-6;
+  }
 }
