@@ -39,11 +39,11 @@ small {
     margin-bottom: 20px;
 }
 
-span {
+.landing-page-form span {
     color: darkred;
 }
 
-span:hover {
+.landing-page-form span:hover {
     cursor: pointer;
     text-decoration: underline;
 }

@@ -67,7 +67,7 @@ const LandingPage = () => {
     }
 
     const signinForm = (
-        <div>
+        <div className='landing-page-form'>
             <form onSubmit={handleSignIn}>
                 <input type='email' id='email' placeholder='Email Address'/>
                 <input type='password' id='password' placeholder='Password'/>
@@ -80,7 +80,7 @@ const LandingPage = () => {
     )
 
     const signupForm = (
-        <div>
+        <div className='landing-page-form'>
             <form onSubmit={handleSignUp}>
                 <input type='email' id='email' placeholder='Email Address'/>
                 <input type='password' id='password' placeholder='Password'/>

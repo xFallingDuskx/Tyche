@@ -1,0 +1,13 @@
+.user-goals-list li {
+    list-style-type:georgian;
+    list-style-position: inside;
+    @apply w-full mb-2
+}
+
+.user-goals-list li > input {
+    width: 90%;
+}
+
+.user-goals-list li > input:focus {
+    outline: none;
+}
