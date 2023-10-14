@@ -1,0 +1,10 @@
+.shadow-grow:hover {
+    box-shadow: rgba(149, 157, 165, 0.4) 0px 8px 24px;
+    transform: scale(1.01);
+    z-index: 5;
+}
+
+.sns-delete-selected {
+    outline: 4px dotted #991b1b;
+    outline-offset: 4px;
+}
