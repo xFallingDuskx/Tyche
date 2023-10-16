@@ -6,21 +6,24 @@ import { useAuth } from '../contexts/AuthContext'
 import { afCapitalize, rgb2hex, generateUid } from '../util/appFunctions'
 import './Snapshot.css'
 import SnapshotNote, { NoteProps } from './SnapshotNote'
+import SnapshotReminder, { ReminderProps } from './SnapshotReminder'
 
 
 const Snapshot = () => {
     const { currentUser } = useAuth()
     if (!currentUser) return
-
+    // Handling goal section
     const [isEditingGoals, setIsEditingGoals] = useState(false)
     const [userYearGoals, setUserYearGoals] = useState<string[]>([])
     const [userMonthGoals, setUserMonthGoals] = useState<string[]>([])
     const [userFinancialAreas, setUserFinancialAreas] = useState<string[]>([])
-    // TODO: create types for reminders and notes to use instead of `any`
-    const [userReminders, setUserReminders] = useState<any[]>([])
+    // Handling reminders
+    const [userReminders, setUserReminders] = useState<ReminderProps[]>([])
+    // Handling notes
     const [userNotes, setUserNotes] = useState<NoteProps[]>([])
     const [isDeletingNotes, setIsDeletingNotes] = useState(false)
     const [notesToDelete, setNotesToDelete] = useState(new Set())
+    // TODO: place fetches in functions
     const faPromise = getFinancialAreas()
     const snapshotInfoPromise = getSnapshotInfo()
 
@@ -210,6 +213,17 @@ const Snapshot = () => {
             })
     }
 
+    const addNewReminder = () => {
+        const newReminder:ReminderProps = {
+            message: '',
+            details: '',
+            time: null,
+            uid: generateUid(),
+        }
+
+        setUserReminders([...userReminders, newReminder])
+    }
+
     return (
         <div className='dashboard-container'>
             {/* TODO: add logic later */}
@@ -266,10 +280,26 @@ const Snapshot = () => {
                     </h1>
                 </div>
             </div>
-            {/* TODO: add logic later */}
-            <div className='bg-gray-200 p-2 my-3 rounded-xl'><h1 className='inline-block'> &#x23F3; Check Ins: </h1> <span className='text-slate-400'> none today! </span></div>
-            {/* TODO: add logic later */}
-            <div className='bg-red-200 p-2 my-3 rounded-xl'><h1 className='inline-block'> &#128337; Reminders: </h1> <span className='text-slate-400'> none at the moment! </span></div>
+            <div className='flat-to-stack'>
+                {/* Reminder section */}
+                <div className='fts-half-content bg-red-200 p-2 my-3 rounded-xl mr-4'><h1 className='inline-block'> &#128337; Reminders: </h1>
+                    {userReminders.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
+                    <div className='flex flex-col pl-2'>
+                        {userReminders.length == 0 ? null :
+                            userReminders.map(snr => <SnapshotReminder key={snr.uid} message={snr.message} details={snr.details} time={snr.time} uid={snr.uid} />)}
+                        <button
+                            id='snr-btn-add'
+                            className={'mt-4 self-start hover:cursor-pointer'}
+                            onClick={() => addNewReminder()}>
+                            <small className='m-auto text-neutral-600 my-auto block'>add new<span className='text-xl pl-1'>+</span></small>
+                        </button>
+                    </div>
+                </div>
+                {/* Check In Section */}
+                <div className='fts-half-content bg-gray-200 p-2 my-3 rounded-xl'><h1 className='inline-block'> &#x23F3; Check Ins: </h1> <span className='text-slate-400'> none today! </span></div>
+            </div>
+
+            {/* Note section */}
             {/* TODO: allow users to delete notes */}
             <div className='bg-transparent border-neutral-400 border-2 box-border p-2 my-4 rounded-xl'><h1 className='inline-block'> &#x1f58a; Notes: </h1>
                 {userNotes.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
