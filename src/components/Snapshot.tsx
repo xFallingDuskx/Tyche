@@ -3,7 +3,7 @@ import getFinancialAreas from '../actions/getFinancialAreas'
 import getSnapshotInfo from '../actions/getSnapshotInfo'
 import updateSnapshotInfo from '../actions/updateSnapshotInfo'
 import { useAuth } from '../contexts/AuthContext'
-import { afCapitalize, rgb2hex } from '../util/appFunctions'
+import { afCapitalize, rgb2hex, generateUid } from '../util/appFunctions'
 import './Snapshot.css'
 import SnapshotNote, { NoteProps } from './SnapshotNote'
 
@@ -167,7 +167,7 @@ const Snapshot = () => {
             subject: '',
             content: '',
             colorHex: '#fdfd96',
-            uid: '_' + Math.random().toString(36).slice(2,9) + Date.now()
+            uid: generateUid()
         }
 
         setUserNotes([...userNotes, newNote])
