@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, PropsWithChildren } from 'react'
 import { auth } from '../firebase/config'
 import { User } from 'firebase/auth'
+import '../animations.css'
 
 
 type AuthContextType = {
@@ -21,62 +22,32 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
     const [currentUser, setCurrentUser] = useState<User | null>(null)
     const [loading, setLoading] = useState(true)
 
-    // const login = async (email: string, password: string) => {
-    //     return signInWithEmailAndPassword(auth, email, password)
-    //         .then((userCredential) => {
-    //             console.log("successfully logged in")
-    //             const user = userCredential.user
-    //             return user
-    //         })
-    //         .catch((error) => {
-    //             console.log("failed to log in:", error.code, error.message)
-    //         })
-    // }
-
-    // const signOut = async () => {
-    //     return auth.signOut()
-    //         .catch((error) => {
-    //             console.log("failed to sign out:", error.code, error.message)
-    //         })
-    // }
-
-    // const signUp = async (email: string, password: string) => {
-    //     return createUserWithEmailAndPassword(auth, email, password)
-    //         .then((userCredential) => {
-    //             console.log("successfully sign up")
-    //             const user = userCredential.user
-    //             return user
-    //         })
-    //         .catch((error) => {
-    //             console.log("failed to sign up:", error.code, error.message)
-    //         })
-    // }
-
-    // const getUser = () => {
-    //     return currentUser
-    // }
 
     useEffect(() => {
         const unsubscribe = auth.onAuthStateChanged(user => {
             setCurrentUser(user)
-            setLoading(false)
+
+            setTimeout(() => {
+                setLoading(false);
+            }, 3000);
         })
 
         return unsubscribe
     }, [])
 
-    // const value = {
-    //     currentUser,
-    //     getUser,
-    //     login,
-    //     signOut,
-    //     signUp
-    // }
+    const loadContent = (
+        <div className='m-auto'>
+            <div style={{ animation: '1s infinite alternate flip-with-scale' }}>
+                <img className='w-48 mx-auto my-5' src='/tyche-icon-temp.svg' alt='site-logo' />
+            </div>
+            <p className='text-center text-lg italic font-semibold'>Loading...</p>
+        </div>
+
+    )
 
     return (
         <AuthContext.Provider value={{ currentUser }} >
-            {/* {!loading && children} */}
-            {loading ? <div>Loading...</div> : children}
+            {loading ? loadContent : children}
         </AuthContext.Provider>
     )
 }
