@@ -7,6 +7,7 @@ import { afCapitalize, rgb2hex, generateUid } from '../util/appFunctions'
 import './Snapshot.css'
 import SnapshotNote, { NoteProps } from './SnapshotNote'
 import SnapshotReminder, { ReminderProps } from './SnapshotReminder'
+import { Timestamp } from 'firebase/firestore'
 
 
 const Snapshot = () => {
@@ -19,6 +20,7 @@ const Snapshot = () => {
     const [userFinancialAreas, setUserFinancialAreas] = useState<string[]>([])
     // Handling reminders
     const [userReminders, setUserReminders] = useState<ReminderProps[]>([])
+    const [userRemindersSaved, setUserRemindersSaved] = useState(true)
     // Handling notes
     const [userNotes, setUserNotes] = useState<NoteProps[]>([])
     const [isDeletingNotes, setIsDeletingNotes] = useState(false)
@@ -202,7 +204,7 @@ const Snapshot = () => {
         snapshotUpdatePromise
             .then(response => {
                 if (response.error) {
-                    alert(`Uh oh, seems that there was an issue updating your goals 🫠 Please try again later.`)
+                    alert(`Uh oh, seems that there was an issue updating your notes 🫠 Please try again later.`)
                     location.reload()
                 }
 
@@ -214,14 +216,61 @@ const Snapshot = () => {
     }
 
     const addNewReminder = () => {
-        const newReminder:ReminderProps = {
+        const newReminder: ReminderProps = {
             message: '',
             details: '',
             time: null,
+            completed: false,
             uid: generateUid(),
         }
 
         setUserReminders([...userReminders, newReminder])
+    }
+
+    const handleReminderActionOnClick = (e: React.MouseEvent<HTMLHeadingElement>) => {
+        const clickedEl = (e.target as HTMLElement)
+        if (clickedEl.classList.contains('snr-delete-btn')) {
+            const rDivContainer = (clickedEl.parentNode!.parentNode!.parentNode!.parentNode as HTMLDivElement);
+            const rUid = rDivContainer.id.slice(8)
+
+            const toDelete = confirm('are you sure that you want to delete this reminder?')
+            if (toDelete) {
+                setUserReminders(userReminders.filter(ur => ur.uid !== rUid))
+            }
+        }
+
+        if (clickedEl.classList.contains('snr-save-btn')) {
+            // update single reminder
+            const rDivContainer = (clickedEl.parentNode!.parentNode!.parentNode!.parentNode as HTMLDivElement);
+            const rUid = rDivContainer.id.slice(8)
+            let updatedReminders: ReminderProps[] = userReminders.filter(ur => ur.uid !== rUid)
+
+            const rMessage = (rDivContainer.querySelector('.snr-message') as HTMLInputElement)?.value
+            const rDetails = (rDivContainer.querySelector('.snr-details') as HTMLTextAreaElement)?.value
+            const rTime = (rDivContainer.querySelector('.snr-time') as HTMLInputElement)?.value
+            const rIsCompleted = (rDivContainer.querySelector('.snr-checkbox') as HTMLInputElement).checked
+
+            updatedReminders.push({
+                message: rMessage,
+                details: rDetails === 'add details' || rDetails == undefined ? '' : rDetails,
+                time: rTime ? Timestamp.fromMillis(Date.parse(rTime)) : null,
+                completed: rIsCompleted,
+                uid: rUid
+            })
+
+            setUserReminders(updatedReminders)
+            const snapshotUpdatePromise = updateSnapshotInfo(currentUser, userYearGoals, userMonthGoals, updatedReminders, userNotes)
+            snapshotUpdatePromise
+                .then(response => {
+                    if (response.error) {
+                        setUserRemindersSaved(false)
+                        console.log('error updating reminders:', response.error)
+                    } else {
+                        setUserRemindersSaved(true)
+                        clickedEl.classList.add('hidden')
+                    }
+                })
+        }
     }
 
     return (
@@ -282,17 +331,32 @@ const Snapshot = () => {
             </div>
             <div className='flat-to-stack'>
                 {/* Reminder section */}
-                <div className='fts-half-content bg-red-200 p-2 my-3 rounded-xl mr-4'><h1 className='inline-block'> &#128337; Reminders: </h1>
-                    {userReminders.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
-                    <div className='flex flex-col pl-2'>
-                        {userReminders.length == 0 ? null :
-                            userReminders.map(snr => <SnapshotReminder key={snr.uid} message={snr.message} details={snr.details} time={snr.time} uid={snr.uid} />)}
-                        <button
-                            id='snr-btn-add'
-                            className={'mt-4 self-start hover:cursor-pointer'}
-                            onClick={() => addNewReminder()}>
-                            <small className='m-auto text-neutral-600 my-auto block'>add new<span className='text-xl pl-1'>+</span></small>
-                        </button>
+                <div className='fts-half-content my-3 rounded-xl mr-4'>
+
+                    {!userRemindersSaved ?
+                        <div className='absolute m-0 pb-4 w-fit leading-7 text-xs text-center bg-red-700 text-white rounded-t-xl -z-10'>
+                            &nbsp;🫠 Failed to update reminders. Please attempt again later. &nbsp;
+                        </div>
+                        : null}
+
+                    <div className={`bg-red-200 p-2 rounded-xl ${!userRemindersSaved ? 'mt-6' : ''}`}>
+                        <h1 className='inline-block'> &#128337; Reminders: </h1>
+                        {userReminders.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
+                        <div className='flex flex-col pl-2'
+                            onClick={handleReminderActionOnClick}>
+                            {/* Ensuring that all reminders are sorted by time in non-descending order */}
+                            {userReminders.length == 0 ? null :
+                                userReminders
+                                    .map(snr => snr = { ...snr, time: Timestamp.fromMillis(snr.time === null || snr.time === undefined ? 0 : snr.time.seconds * 1000)})
+                                    .sort((snr1, snr2) => {return ((snr1.time ? snr1.time.toMillis() : 0) - (snr2.time ? snr2.time.toMillis() : 0))})
+                                    .map(snr => <SnapshotReminder key={snr.uid} message={snr.message} details={snr.details} time={snr.time} completed={snr.completed} uid={snr.uid} />)}
+                            <button
+                                id='snr-btn-add'
+                                className={'mt-4 self-start hover:cursor-pointer'}
+                                onClick={() => addNewReminder()}>
+                                <small className='m-auto text-neutral-600 my-auto block'>add new<span className='text-xl pl-1'>+</span></small>
+                            </button>
+                        </div>
                     </div>
                 </div>
                 {/* Check In Section */}
@@ -301,7 +365,8 @@ const Snapshot = () => {
 
             {/* Note section */}
             {/* TODO: allow users to delete notes */}
-            <div className='bg-transparent border-neutral-400 border-2 box-border p-2 my-4 rounded-xl'><h1 className='inline-block'> &#x1f58a; Notes: </h1>
+            <div className='bg-transparent border-neutral-400 border-2 box-border p-2 my-4 rounded-xl'>
+                <h1 className='inline-block'> &#x1f58a; Notes: </h1>
                 {userNotes.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
                 <div className='flex flex-wrap place-content-around'>
                     {userNotes.length == 0 ? null :

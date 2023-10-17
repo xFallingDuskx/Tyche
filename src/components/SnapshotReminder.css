@@ -1,9 +1,0 @@
-.snr-checkbox {
-    width: 45px;
-    height: 45px;
-    clip-path: circle(46% at 50% 50%);
-}
-
-.snr-checkbox:checked {
-    @apply bg-black text-white
-}
