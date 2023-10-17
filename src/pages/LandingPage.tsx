@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import signUpUser from '../firebase/auth/signUp'
 import signInUser from '../firebase/auth/signIn'
+import tempIcon from '/tyche-icon-temp.svg'
 import './LandingPage.css'
 
 
@@ -95,7 +96,7 @@ const LandingPage = () => {
 
     return (
         <div id='main-container' className='self-start h-fit mx-auto text-center'>
-            <img className='w-48 mx-auto my-5' src='/tyche-icon-temp.svg' alt='site-logo' />
+            <img className='w-48 mx-auto my-5' src={tempIcon} alt='site-logo' />
             <h1 className='brand text-8xl mb-2 text-gradient from-black to-red-500 py-2'> Tyche </h1>
             <h2 className='text-xl text-gray-600 mb-16'> your bestfriend here to help manage your finances </h2>
             {/* <img className='w-48 mx-auto my-8' src='/tyche-icon-temp.svg' alt='site-logo' /> */}

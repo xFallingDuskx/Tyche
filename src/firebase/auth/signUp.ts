@@ -1,6 +1,6 @@
 import { auth } from  '../config'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { FirebaseApp, FirebaseError } from 'firebase/app'
+import { FirebaseError } from 'firebase/app'
 
 
 export default async function signUpUser(email: string, password: string) {

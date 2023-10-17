@@ -1,5 +1,4 @@
 import { useAuth } from '../contexts/AuthContext'
-import getFinancialAreas from '../actions/getFinancialAreas'
 import TopBar from '../components/TopBar'
 import Snapshot from '../components/Snapshot'
 
@@ -17,7 +16,6 @@ const HomePage = () => {
     }
 
     // TODO: only fetch if needed - use to design initial dashboards 
-    const userFinancialAreas = getFinancialAreas()
 
     const content = (
         <div id='main-container' className='h-screen w-full flex flex-col p-0'>
