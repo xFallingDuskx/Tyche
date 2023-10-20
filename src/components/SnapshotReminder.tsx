@@ -40,7 +40,7 @@ const SnapshotReminder = ({ message, details, time, completed, uid }: ReminderPr
             }
         }
 
-
+        return
     }, [reminderMessage, reminderDetails, reminderTime, reminderIsCompleted])
 
     const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {

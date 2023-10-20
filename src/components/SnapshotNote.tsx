@@ -26,6 +26,7 @@ const SnapshotNote = ({ subject, content, colorHex, uid }: NoteProps) => {
         const snsUnsavedIndicator = (document.querySelector(`#${id} .snapshot-note-status`) as HTMLParagraphElement)
         snsUnsavedIndicator.style.display = noteUnsavedIndicatorDisplay
         
+        return
     }, [noteSubject, noteContent, noteColorHex])
 
     return (

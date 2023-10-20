@@ -76,6 +76,9 @@ const Snapshot = () => {
                     setUserNotes(notes)
                 }
             })
+
+
+            return
     }, [])
 
     // Use to track notes to delete
@@ -112,6 +115,8 @@ const Snapshot = () => {
                 snsParentDiv.classList.remove('sns-delete-selected')
             }
         })
+
+        return
     }, [isDeletingNotes, notesToDelete])
 
     const finishEdit = (toSave: boolean) => {
