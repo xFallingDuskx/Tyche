@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
 
             setTimeout(() => {
                 setLoading(false);
-            }, 3000);
+            }, 1500);
         })
 
         return unsubscribe
