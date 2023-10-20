@@ -21,6 +21,7 @@ const Snapshot = () => {
     // Handling reminders
     const [userReminders, setUserReminders] = useState<ReminderProps[]>([])
     const [userRemindersSaved, setUserRemindersSaved] = useState(true)
+    const [showCompletedReminders, setShowCompletedReminders] = useState(false)
     // Handling notes
     const [userNotes, setUserNotes] = useState<NoteProps[]>([])
     const [isDeletingNotes, setIsDeletingNotes] = useState(false)
@@ -78,7 +79,7 @@ const Snapshot = () => {
             })
 
 
-            return
+        return
     }, [])
 
     // Use to track notes to delete
@@ -347,14 +348,27 @@ const Snapshot = () => {
                     <div className={`bg-red-200 p-2 rounded-xl ${!userRemindersSaved ? 'mt-6' : ''}`}>
                         <h1 className='inline-block'> &#128337; Reminders: </h1>
                         {userReminders.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
+                        {userReminders.length == 0 ? null :
+                            <button onClick={(_e) => setShowCompletedReminders(!showCompletedReminders)}
+                                className='w-fit mr-1 ml-auto block text-xs text-neutral-600'>
+                                {showCompletedReminders ? 'Hide Completed' : 'Show Completed'}
+                            </button>}
                         <div className='flex flex-col pl-2'
                             onClick={handleReminderActionOnClick}>
                             {/* Ensuring that all reminders are sorted by time in non-descending order */}
                             {userReminders.length == 0 ? null :
+                            showCompletedReminders ?
                                 userReminders
-                                    .map(snr => snr = { ...snr, time: Timestamp.fromMillis(snr.time === null || snr.time === undefined ? 0 : snr.time.seconds * 1000)})
-                                    .sort((snr1, snr2) => {return ((snr1.time ? snr1.time.toMillis() : 0) - (snr2.time ? snr2.time.toMillis() : 0))})
-                                    .map(snr => <SnapshotReminder key={snr.uid} message={snr.message} details={snr.details} time={snr.time} completed={snr.completed} uid={snr.uid} />)}
+                                    .map(snr => snr = { ...snr, time: Timestamp.fromMillis(snr.time === null || snr.time === undefined ? 0 : snr.time.seconds * 1000) })
+                                    .sort((snr1, snr2) => { return ((snr1.time ? snr1.time.toMillis() : 0) - (snr2.time ? snr2.time.toMillis() : 0)) })
+                                    .map(snr => <SnapshotReminder key={snr.uid} message={snr.message} details={snr.details} time={snr.time} completed={snr.completed} uid={snr.uid} />)
+                                :
+                                userReminders
+                                    .map(snr => snr = { ...snr, time: Timestamp.fromMillis(snr.time === null || snr.time === undefined ? 0 : snr.time.seconds * 1000) })
+                                    .sort((snr1, snr2) => { return ((snr1.time ? snr1.time.toMillis() : 0) - (snr2.time ? snr2.time.toMillis() : 0)) })
+                                    .filter(snr => !snr.completed)
+                                    .map(snr => <SnapshotReminder key={snr.uid} message={snr.message} details={snr.details} time={snr.time} completed={snr.completed} uid={snr.uid} />)
+                                }
                             <button
                                 id='snr-btn-add'
                                 className={'mt-4 self-start hover:cursor-pointer'}

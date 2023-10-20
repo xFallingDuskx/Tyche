@@ -67,7 +67,8 @@ const SnapshotReminder = ({ message, details, time, completed, uid }: ReminderPr
                                 defaultValue={reminderMessage}
                                 onChange={e => setReminderMessage(e.target.value)}
                                 onFocus={_e => setShowAllFields(true)}
-                                className='snr-message w-full text-neutral-800 bg-transparent border-none focus:border-none overflow-hidden overflow-ellipsis' />
+                                className={`snr-message w-full text-neutral-800 bg-transparent border-none focus:border-none overflow-hidden overflow-ellipsis 
+                                            ${reminderIsCompleted ? 'line-through' : ''}`} />
                         </label>
 
                         {reminderDetails.length > 0 || showAllFields ?
@@ -76,7 +77,8 @@ const SnapshotReminder = ({ message, details, time, completed, uid }: ReminderPr
                                 placeholder='add details'
                                 onChange={e => setReminderDetails(e.target.value)}
                                 onFocus={_e => setShowAllFields(true)}
-                                className='snr-details w-full text-neutral-500 text-sm italic bg-transparent border-none focus:outline-none h-fit resize-none' />
+                                className={`snr-details w-full text-neutral-500 text-sm italic bg-transparent border-none focus:outline-none h-fit resize-none 
+                                            ${reminderIsCompleted ? 'line-through' : ''}`} />
                             : null
                         }
 
@@ -96,10 +98,6 @@ const SnapshotReminder = ({ message, details, time, completed, uid }: ReminderPr
                     </div>
 
                 </div>
-
-                {reminderIsCompleted ?
-                    <small className='p-0 m-0 text-neutral-500 italic text-end'>Completed</small>
-                    : null}
 
             </div>
         </div>
