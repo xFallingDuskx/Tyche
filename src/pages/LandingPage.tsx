@@ -70,8 +70,8 @@ const LandingPage = () => {
     const signinForm = (
         <div className='landing-page-form'>
             <form onSubmit={handleSignIn}>
-                <input type='email' id='email' placeholder='Email Address'/>
-                <input type='password' id='password' placeholder='Password'/>
+                <input type='email' id='email' placeholder='Email Address' />
+                <input type='password' id='password' placeholder='Password' />
                 {error ? <small className='error'> {error} </small> : null}
                 <button type='submit'> Login </button>
             </form>
@@ -83,9 +83,9 @@ const LandingPage = () => {
     const signupForm = (
         <div className='landing-page-form'>
             <form onSubmit={handleSignUp}>
-                <input type='email' id='email' placeholder='Email Address'/>
-                <input type='password' id='password' placeholder='Password'/>
-                <input type='password' id='confirmPassword' placeholder='Confirm Password'/>
+                <input type='email' id='email' placeholder='Email Address' />
+                <input type='password' id='password' placeholder='Password' />
+                <input type='password' id='confirmPassword' placeholder='Confirm Password' />
                 {error ? <small className='error'> {error} </small> : null}
                 <button type='submit'> Sign Up </button>
             </form>
@@ -98,7 +98,9 @@ const LandingPage = () => {
         <div id='main-container' className='self-start h-fit mx-auto text-center'>
             <img className='w-48 mx-auto my-5' src={tempIcon} alt='site-logo' />
             <h1 className='brand text-8xl mb-2 text-gradient from-black to-red-500 py-2'> Tyche </h1>
-            <h2 className='text-xl text-gray-600 mb-16'> your bestfriend here to help manage your finances </h2>
+            <h2 className='text-xl text-gray-600 mb-16'>
+                your bestfriend here to help manage your finances better than spreadsheets
+            </h2>
             {/* <img className='w-48 mx-auto my-8' src='/tyche-icon-temp.svg' alt='site-logo' /> */}
             <br />
             {hasAccount ? signinForm : signupForm}
