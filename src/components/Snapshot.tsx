@@ -280,8 +280,7 @@ const Snapshot = () => {
     }
 
     return (
-        <div className='dashboard-container'>
-            {/* TODO: add logic later */}
+        <div>
             <div className='bg-blue-200 p-2 mt-2 rounded-xl'><h1 className='inline-block'> &#128205; Notices: </h1> <span className='text-slate-400'> none today! </span></div>
             <div className='relative bg-transparent border-neutral-400 border-2 box-border p-2 my-4 rounded-xl'>
                 {isEditingGoals ?
@@ -384,7 +383,7 @@ const Snapshot = () => {
 
             {/* Note section */}
             {/* TODO: allow users to delete notes */}
-            <div className='bg-transparent border-neutral-400 border-2 box-border p-2 my-4 rounded-xl'>
+            <div className='bg-transparent border-neutral-400 border-2 box-border p-2 mt-4 rounded-xl'>
                 <h1 className='inline-block'> &#x1f58a; Notes: </h1>
                 {userNotes.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
                 <div className='flex flex-wrap place-content-around'>
