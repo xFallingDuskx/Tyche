@@ -129,7 +129,7 @@ const DashboardLayout = ({ header, subheader }: DBLayoutProps) => {
                     : null}
 
             {/* TODO: dynamically set id and use in getCurrentBreakpoint() */}
-            <div id='dashboard-a' onClick={() => setChangesDetected(true)} className='p-1 rounded-xl bg-transparent'>
+            <div id='dashboard-a' onClick={() => setChangesDetected(true)} className='dbl p-1 rounded-xl bg-transparent'>
                 <h1 className='text-center text-4xl px-1 py-4'>{header}</h1>
                 {subheader ? <h2 className='text-center text-2xl'>{subheader}</h2> : null}
                 <ResponsiveGridLayout
