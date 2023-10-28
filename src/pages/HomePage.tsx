@@ -22,7 +22,7 @@ const HomePage = () => {
 
     let pages: JSX.Element[] = []
     pages.push(<Snapshot />)
-    pages.push(<DashboardLayout header='General Finances' bgColor='lightgray' />)
+    pages.push(<DashboardLayout header='General Finances' />)
 
     const prevBtn = (
         <button className='animated-btn-2 bg-red-300 my-6 w-fit mx-auto' onClick={() => setPage(page - 1)}> Prev </button>

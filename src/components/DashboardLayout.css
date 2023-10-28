@@ -1,0 +1,23 @@
+/* Removal found here: https://stackoverflow.com/a/71658079 */
+.react-resizable-handle {
+  background-image: none;
+  padding: 0;
+  background-color: transparent;
+}
+
+.react-grid-item>.react-resizable-handle.react-resizable-handle-n,
+.react-grid-item>.react-resizable-handle.react-resizable-handle-e,
+.react-grid-item>.react-resizable-handle.react-resizable-handle-s,
+.react-grid-item>.react-resizable-handle.react-resizable-handle-w,
+.react-grid-item>.react-resizable-handle.react-resizable-handle-ne,
+.react-grid-item>.react-resizable-handle.react-resizable-handle-nw,
+.react-grid-item>.react-resizable-handle.react-resizable-handle-se,
+.react-grid-item>.react-resizable-handle.react-resizable-handle-sw {
+  transform: none;
+  margin: 0;
+}
+
+.react-grid-item>.react-resizable-handle::after {
+  border: none;
+  content: none;
+}
