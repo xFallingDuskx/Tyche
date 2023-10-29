@@ -73,7 +73,7 @@ const LandingPage = () => {
                 <input type='email' id='email' placeholder='Email Address' />
                 <input type='password' id='password' placeholder='Password' />
                 {error ? <small className='error'> {error} </small> : null}
-                <button type='submit'> Login </button>
+                <button type='submit' className='text-xl'> Login </button>
             </form>
             <br />
             <small>Don't have an account? <span onClick={handleSwitch}>Create one today!</span> </small>
@@ -87,7 +87,7 @@ const LandingPage = () => {
                 <input type='password' id='password' placeholder='Password' />
                 <input type='password' id='confirmPassword' placeholder='Confirm Password' />
                 {error ? <small className='error'> {error} </small> : null}
-                <button type='submit'> Sign Up </button>
+                <button type='submit' className='text-xl'> Sign Up </button>
             </form>
             <br />
             <small>Already have an account? <span onClick={handleSwitch}>Sign In!</span> </small>
@@ -98,7 +98,7 @@ const LandingPage = () => {
         <div id='main-container' className='self-start h-fit mx-auto text-center'>
             <img className='w-48 mx-auto my-5' src={tempIcon} alt='site-logo' />
             <h1 className='brand text-8xl mb-2 text-gradient from-black to-red-500 py-2'> Tyche </h1>
-            <h2 className='text-xl text-gray-600 mb-16'>
+            <h2 className='!text-2xl text-gray-600 mb-16'>
                 your bestfriend here to help manage your finances better than spreadsheets
             </h2>
             {/* <img className='w-48 mx-auto my-8' src='/tyche-icon-temp.svg' alt='site-logo' /> */}

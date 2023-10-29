@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
             <div style={{ animation: '1s infinite alternate flip-with-scale' }}>
                 <img className='w-48 mx-auto my-5' src={tempIcon} alt='site-logo' />
             </div>
-            <p className='text-center text-lg italic font-semibold'>Loading...</p>
+            <p className='text-center !text-2xl italic font-semibold'>Loading...</p>
         </div>
 
     )

@@ -93,15 +93,15 @@ const WelcomePage = () => {
     let steps: JSX.Element[] = []
     const step0 = (
         <>
-            <h1 className='text-4xl'> Welcome to <span className='brand text-6xl text-gradient from-black to-red-500'> Tyche </span></h1>
-            <h2 className='text-xl'>Here to help you manage your finances easier than spreadsheets.</h2>
+            <h1 className='text-5xl'> Welcome to <span className='brand !text-6xl text-gradient from-black to-red-500'> Tyche </span></h1>
+            <h2 className='text-2xl'>Here to help you manage your finances easier than spreadsheets.</h2>
         </>
     )
 
     const step1 = (
         <>
-            <h1 className='text-3xl my-4 font-bold'> My Belief </h1>
-            <p className='text-lg'>
+            <h1 className='text-4xl my-4 font-bold'> My Belief </h1>
+            <p className='!text-xl'>
                 Finances can already be quite stressful, complicated, and overwhelming at times. As such, I, your best friend, believe
                 that managing them should be as easy and pleasant as possible. That means no spending time on spreadsheets, no writing
                 on scrap paper, and surely not trying to keep it all in your head.
@@ -117,39 +117,39 @@ const WelcomePage = () => {
 
     const step2 = (
         <>
-            <label htmlFor='user-preferred-name' className='text-2xl mb-2'> What Should I Call You? </label>
-            <input type='text' id='user-preferred-name' className='text-lg text-center' autoComplete='off' />
+            <label htmlFor='user-preferred-name' className='text-3xl mb-2'> What Should I Call You? </label>
+            <input type='text' id='user-preferred-name' className='!text-2xl text-center' autoComplete='off' />
             {preferredNameError ? <small className='error mt-1'>{preferredNameError}</small> : null}
             <label htmlFor='user-financial-focus-areas' className='text-2xl mt-6 mb-2'> Which Financial Areas Do You Want To Focus On? </label>
             <div id='user-financial-focus-areas'>
                 <div className='checkbox-wrapper-1'>
                     <input type='checkbox' id='fa-cash-flow-tracking' name='finance-area' />
-                    <label htmlFor='fa-cash-flow-tracking' className='text-lg'> Cash Flow Tracking </label>
-                    <div className='tooltip-r text-xs align-top'>&nbsp; &#9432;
-                        <p className='tooltip-text bg-gray-200 text-black text-sm'>
+                    <label htmlFor='fa-cash-flow-tracking' className='text-xl'> Cash Flow Tracking </label>
+                    <div className='tooltip-r !text-xs align-top'>&nbsp; &#9432;
+                        <p className='tooltip-text bg-gray-200 text-black !text-xs'>
                             Track when you're paid, bills are due, a significant amount of money was spent, and more.
                         </p>
                     </div>
                 </div>
                 <div className='checkbox-wrapper-1'>
                     <input type='checkbox' id='fa-budgeting' name='finance-area' />
-                    <label htmlFor='fa-budgeting' className='text-lg'> Budgeting </label>
+                    <label htmlFor='fa-budgeting' className='text-xl'> Budgeting </label>
                 </div>
                 <div className='checkbox-wrapper-1'>
                     <input type='checkbox' id='fa-saving' name='finance-area' />
-                    <label htmlFor='fa-saving' className='text-lg'> Saving </label>
+                    <label htmlFor='fa-saving' className='text-xl'> Saving </label>
                 </div>
                 <div className='checkbox-wrapper-1'>
                     <input type='checkbox' id='fa-credit' name='finance-area' />
-                    <label htmlFor='fa-credit' className='text-lg'> Credit </label>
+                    <label htmlFor='fa-credit' className='text-xl'> Credit </label>
                 </div>
                 <div className='checkbox-wrapper-1'>
                     <input type='checkbox' id='fa-debt-and-loans' name='finance-area' />
-                    <label htmlFor='fa-debt-and-loans' className='text-lg'> Debt & Loans </label>
+                    <label htmlFor='fa-debt-and-loans' className='text-xl'> Debt & Loans </label>
                 </div>
                 <div className='checkbox-wrapper-1'>
                     <input type='checkbox' id='fa-retirement' name='finance-area' />
-                    <label htmlFor='fa-retirement' className='text-lg'> Retirement </label>
+                    <label htmlFor='fa-retirement' className='text-xl'> Retirement </label>
                 </div>
                 {financialAreasError ? <small className='error'>{financialAreasError}</small> : null}
             </div>
@@ -158,17 +158,17 @@ const WelcomePage = () => {
 
     const step3 = (
         <>
-            <p className='text-lg'>
+            <p className='!text-2xl'>
                 Amazing!
                 <br />
-                It's great to meet you <span className='font-extrabold text-black'>{userPreferredName}</span>! I can't wait to help you
+                It's great to meet you <span className='font-extrabold text-red-800 !text-2xl'>{userPreferredName}</span>! I can't wait to help you
                 with
             </p>
             <ul className='list-disc'>
-                {userFinancialAreas.map((fa) => <li key={fa} className='text-lg font-extrabold capitalize w-fit mx-auto'>{fa}</li>)}
+                {userFinancialAreas.map((fa) => <li key={fa} className='!text-2xl font-extrabold capitalize w-fit mx-auto'>{fa}</li>)}
             </ul>
-            <p className='text-lg mt-2'>
-                Ready to get started? To kick it off, go <span onClick={handleHomeClick} className='text-red-800 hover:underline hover:cursor-pointer'>Home</span> and set up your dashboards.
+            <p className='!text-2xl mt-4'>
+                Ready to get started? To kick it off, go <span onClick={handleHomeClick} className='text-red-800 hover:underline hover:cursor-pointer !text-2xl'>Home</span> and set up your dashboards.
                 You've got this!
             </p>
         </>
@@ -198,7 +198,7 @@ const WelcomePage = () => {
     )
     return (
         <div id='main-container' className='flex flex-col p-0 m-0 w-full justify-center place-items-center text-center'>
-            <div className='scroll-container hide-scrollbar flex flex-col'>
+            <div className='scroll-container hide-scrollbar flex flex-col w-fit'>
                 {!currentUser ? null : steps.at(currStep)}
                 {currStep > 0 && currStep <= 3 ? prevBtn : null}
                 {currStep >= 0 && currStep < 3 ? nextBtn : null}

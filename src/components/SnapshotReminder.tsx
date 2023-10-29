@@ -77,7 +77,7 @@ const SnapshotReminder = ({ message, details, time, completed, uid }: ReminderPr
                                 placeholder='add details'
                                 onChange={e => setReminderDetails(e.target.value)}
                                 onFocus={_e => setShowAllFields(true)}
-                                className={`snr-details w-full text-neutral-500 text-sm italic bg-transparent border-none focus:outline-none h-fit resize-none 
+                                className={`snr-details w-full text-neutral-500 !text-base italic bg-transparent border-none focus:outline-none h-fit resize-none 
                                             ${reminderIsCompleted ? 'line-through' : ''}`} />
                             : null
                         }
@@ -86,14 +86,14 @@ const SnapshotReminder = ({ message, details, time, completed, uid }: ReminderPr
                             <input type='datetime-local'
                                 defaultValue={!reminderTime || reminderTime.isEqual(defaultDT) ? undefined : formatDateTime(reminderTime.toMillis())}
                                 onChange={handleDateChange}
-                                className='snr-time mt-2 bg-transparent border-none focus:border-none text-neutral-500 text-sm focus:outline-neutral-500' />
+                                className='snr-time mt-2 bg-transparent border-none focus:border-none text-neutral-500 !text-sm focus:outline-neutral-500' />
                             : null}
                     </div>
 
                     <div className='flex flex-col w-fit'>
-                        <button className='snr-delete-btn w-5 h-5 text-sm font-bold hover:bg-neutral-400'>x</button>
+                        <button className='snr-delete-btn w-6 h-6 !text-base font-bold hover:bg-neutral-400 align-middle'>X</button>
                         {hasBeenEdited ?
-                            <button className='snr-save-btn w-5 h-5 text-sm font-bold hover:bg-neutral-400 inline-block'>&#x2713;</button>
+                            <button className='snr-save-btn w-6 h-6 !text-sm font-bold hover:bg-neutral-400 inline-block'>&#x2713;</button>
                             : null}
                     </div>
 

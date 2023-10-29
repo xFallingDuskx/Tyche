@@ -281,7 +281,7 @@ const Snapshot = () => {
 
     return (
         <div>
-            <div className='bg-blue-200 p-2 mt-2 rounded-xl'><h1 className='inline-block'> &#128205; Notices: </h1> <span className='text-slate-400'> none today! </span></div>
+            <div className='bg-blue-200 p-2 mt-2 rounded-xl'><h1 className='inline-block text-xl'> &#128205; Notices: </h1> <span className='text-slate-400'> none today! </span></div>
             <div className='relative bg-transparent border-neutral-400 border-2 box-border p-2 my-4 rounded-xl'>
                 {isEditingGoals ?
                     <>
@@ -322,7 +322,7 @@ const Snapshot = () => {
                             : null}                    </div>
                 </div>
                 <div className='border-t-2 border-neutral-400 p-2 mt-5'>
-                    <h1 className='text-red-800 text-center'>Financial Focus Areas:
+                    <h1 className='text-red-800 text-center text-xl'>Financial Focus Areas:
                         <span className='text-black hover:no-underline'> {userFinancialAreas.length == 0 ? 'None yet!' : userFinancialAreas.toString()}</span>
                         {isEditingGoals ?
                             <div className='tooltip-r text-xs align-top text-neutral-400'>&nbsp; &#9432;
@@ -345,11 +345,11 @@ const Snapshot = () => {
                         : null}
 
                     <div className={`bg-red-200 p-2 rounded-xl ${!userRemindersSaved ? 'mt-6' : ''}`}>
-                        <h1 className='inline-block'> &#128337; Reminders: </h1>
+                        <h1 className='inline-block text-xl'> &#128337; Reminders: </h1>
                         {userReminders.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
                         {userReminders.length == 0 ? null :
                             <button onClick={(_e) => setShowCompletedReminders(!showCompletedReminders)}
-                                className='w-fit mr-1 ml-auto block text-xs text-neutral-600'>
+                                className='w-fit mr-1 ml-auto block text-sm text-neutral-600'>
                                 {showCompletedReminders ? 'Hide Completed' : 'Show Completed'}
                             </button>}
                         <div className='flex flex-col pl-2'
@@ -372,19 +372,19 @@ const Snapshot = () => {
                                 id='snr-btn-add'
                                 className={'mt-4 self-start hover:cursor-pointer'}
                                 onClick={() => addNewReminder()}>
-                                <small className='m-auto text-neutral-600 my-auto block'>add new<span className='text-xl pl-1'>+</span></small>
+                                <small className='m-auto text-neutral-600 my-auto block'>add new<span className='!text-2xl pl-1'>+</span></small>
                             </button>
                         </div>
                     </div>
                 </div>
                 {/* Check In Section */}
-                <div className='fts-half-content bg-gray-200 p-2 my-3 rounded-xl'><h1 className='inline-block'> &#x23F3; Check Ins: </h1> <span className='text-slate-400'> none today! </span></div>
+                <div className='fts-half-content bg-gray-200 p-2 my-3 rounded-xl'><h1 className='inline-block text-xl'> &#x23F3; Check Ins: </h1> <span className='text-slate-400'> none today! </span></div>
             </div>
 
             {/* Note section */}
             {/* TODO: allow users to delete notes */}
             <div className='bg-transparent border-neutral-400 border-2 box-border p-2 mt-4 rounded-xl'>
-                <h1 className='inline-block'> &#x1f58a; Notes: </h1>
+                <h1 className='inline-block text-xl'> &#x1f58a; Notes: </h1>
                 {userNotes.length == 0 ? <span className='text-slate-400'> none at the moment! </span> : null}
                 <div className='flex flex-wrap place-content-around'>
                     {userNotes.length == 0 ? null :
