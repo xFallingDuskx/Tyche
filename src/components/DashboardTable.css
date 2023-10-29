@@ -1,0 +1,11 @@
+.dbt table thead th {
+    @apply uppercase font-thin border-inherit
+}
+
+.dbt table tbody td {
+    @apply p-1
+}
+
+.dbt-border {
+    @apply border-opacity-40 border-neutral-400
+}

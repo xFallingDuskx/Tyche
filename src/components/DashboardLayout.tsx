@@ -7,6 +7,7 @@ import './DashboardLayout.css'
 export type DBLayoutProps = {
     header: string,
     subheader?: string,
+    color: string,
 }
 
 const ResponsiveGridLayout = WidthProvider(Responsive)
@@ -48,7 +49,8 @@ const getCurrentBreakpoint = () => {
 
 
 
-const DashboardLayout = ({ header, subheader }: DBLayoutProps) => {
+const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
+    const [accentColor, setAccentColor] = useState(color)
     const [changesDetected, setChangesDetected] = useState(false)
     const [changesFailedToSave, setChangesFailedToSave] = useState(false)
     const [breakpoint, setBreakpoint] = useState('')
@@ -98,12 +100,14 @@ const DashboardLayout = ({ header, subheader }: DBLayoutProps) => {
 
         let w = Math.ceil((innerContent!.clientWidth - dbMargin[0]) / (colWidth + dbMargin[0])) + 1
         let h = Math.ceil((innerContent!.scrollHeight - dbMargin[1]) / (dbRowHeight + dbMargin[1])) + 1
+        // newItem.minH = h
+        // placeholder.minH = h
 
         if (newItem.w < w) {
             newItem.w = w
             placeholder.w = w
         }
-        
+
         if (newItem.h < h) {
             newItem.h = h
             placeholder.h = h
@@ -117,20 +121,31 @@ const DashboardLayout = ({ header, subheader }: DBLayoutProps) => {
             {/* Info Banner */}
             {changesDetected && !changesFailedToSave ?
                 <div onClick={() => saveChanges()}
-                    className='self-center w-fit leading-7 text-xs text-center bg-blue-500 text-white rounded-2xl hover:bg-opacity-80 hover:cursor-pointer'>
-                    &nbsp;&nbsp; 💡 Click here to save any changes &nbsp;&nbsp;
+                    className='self-center w-fit leading-7 tracking-wider text-sm text-center bg-blue-500 text-white rounded-2xl hover:bg-opacity-80 hover:cursor-pointer'>
+                    &nbsp; 💡 Click here to save any changes &nbsp;
                 </div>
                 :
                 changesDetected && changesFailedToSave ?
                     <div onClick={() => saveChanges()}
-                        className='self-center w-fit leading-7 text-xs text-center bg-red-700 text-white rounded-2xl hover:bg-opacity-80 hover:cursor-pointer'>
-                        &nbsp;&nbsp; 🫠 Failed to save changes. Click to try again. &nbsp;&nbsp;
+                        className='self-center w-fit leading-7 tracking-wider text-sm text-center bg-red-700 text-white rounded-2xl hover:bg-opacity-80 hover:cursor-pointer'>
+                        &nbsp; 🫠 Failed to save changes. Click to try again. &nbsp;
                     </div>
                     : null}
 
             {/* TODO: dynamically set id and use in getCurrentBreakpoint() */}
             <div id='dashboard-a' onClick={() => setChangesDetected(true)} className='dbl p-1 rounded-xl bg-transparent'>
-                <h1 className='text-center text-4xl px-1 py-4'>{header}</h1>
+                <div className='flex justify-center'>
+                    <label htmlFor='db-color-selector'
+                        style={{ backgroundColor: accentColor }}
+                        className='w-2 mr-1 inline-block rounded-full my-auto outline-none'>
+                        <input type='color' value={accentColor}
+                            id='db-color-selector'
+                            name='db-color-selector'
+                            onChange={(e) => setAccentColor(e.target.value)}
+                            className='w-full border-0 focus:border-0 outline-1 outline-dotted p-0 invisible' />
+                    </label>
+                    <h1 className='text-center text-4xl px-1 py-4'>{header}</h1>
+                </div>
                 {subheader ? <h2 className='text-center text-2xl'>{subheader}</h2> : null}
                 <ResponsiveGridLayout
                     className='layout p-5 pt-0 mb-5'
@@ -142,13 +157,13 @@ const DashboardLayout = ({ header, subheader }: DBLayoutProps) => {
                     onResize={handleOnResize}
                     preventCollision={false}>
                     <div key='a' data-grid={{ x: 0, y: 0, w: 2, h: 5 }}>
-                        <DashboardTable />
+                        <DashboardTable color={accentColor} />
                     </div>
                     <div key='b' data-grid={{ x: 5, y: 0, w: 5, h: 2 }}>
-                        <DashboardTable />
+                        <DashboardTable color={accentColor} />
                     </div>
                     <div key='c' data-grid={{ x: 14, y: 0, w: 3, h: 2 }}>
-                        <DashboardTable />
+                        <DashboardTable color={accentColor} />
                     </div>
                 </ResponsiveGridLayout>
             </div>
