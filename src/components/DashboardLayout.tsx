@@ -64,6 +64,9 @@ const getCurrentBreakpoint = () => {
 
 
 const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
+    const [dbHeader, setDbHeader] = useState(header)
+    const [dbSubheader, setDbSubheader] = useState(subheader)
+    const [editDbHeaders, setEditDbHeaders] = useState(false)
     const [accentColor, setAccentColor] = useState(color)
     const [changesDetected, setChangesDetected] = useState(false)
     const [changesFailedToSave, setChangesFailedToSave] = useState(false)
@@ -103,7 +106,7 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
             })
         }
 
-        const promise = updateDashboardContent(currentUser, dbEl.id, header, subheader ?? '', accentColor, dbContent)
+        const promise = updateDashboardContent(currentUser, dbEl.id, dbHeader, dbSubheader ?? '', accentColor, dbContent)
         promise
             .then(response => {
                 if (response.error) {
@@ -114,6 +117,7 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
                 }
                 setChangesDetected(false)
                 setChangesFailedToSave(false)
+                setEditDbHeaders(false)
             })
     }
 
@@ -209,9 +213,17 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
                             onChange={(e) => setAccentColor(e.target.value)}
                             className='w-full border-0 focus:border-0 outline-1 outline-dotted p-0 invisible' />
                     </label>
-                    <h1 className='text-center text-4xl px-1 py-4'>{header}</h1>
+                    {editDbHeaders ? <input type='text' value={dbHeader} placeholder='Enter header'
+                        className='text-center !text-4xl px-1 pt-4' onChange={e => setDbHeader(e.target.value)} />
+                        : <h1 className='text-center text-4xl px-1 py-4'
+                            onClick={_ => setEditDbHeaders(true)}>{dbHeader}</h1>}
+                    {/* <h1 className='text-center text-4xl px-1 py-4'>{dbHeader}</h1> */}
                 </div>
-                {subheader ? <h2 className='text-center text-2xl'>{subheader}</h2> : null}
+                {editDbHeaders ? <input type='text' value={dbSubheader} placeholder='Enter subheader'
+                    className='block mx-auto text-center !text-2xl italic text-gray-500 my-2' onChange={e => setDbSubheader(e.target.value)} />
+                    : dbSubheader ? <h2 className='text-center text-2xl italic text-gray-500 mb-2 -mt-3'
+                        onClick={_ => setEditDbHeaders(true)}>{dbSubheader}</h2> : null}
+
                 <ResponsiveGridLayout
                     className='layout p-5 pt-0 mb-5'
                     breakpoints={dbBreakpoints}
