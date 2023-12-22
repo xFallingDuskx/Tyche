@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import { Responsive, WidthProvider } from 'react-grid-layout'
-import DashboardTable from './DashboardTable'
+import updateDashboardContent from '../actions/updateDashboardContent'
+import DashboardTable, { handleTableConversion } from './DashboardTable'
 import './DashboardLayout.css'
+import { useAuth } from '../contexts/AuthContext'
 
 
 export type DBLayoutProps = {
@@ -13,7 +15,6 @@ export type DBLayoutProps = {
 const ResponsiveGridLayout = WidthProvider(Responsive)
 
 /* TODO List:
-   - Save updated dashboard layout and content
    - Fetch current dashboard layout and content
    - Design basic table element (allow horizontal scrolling)
    - Ensure table content can be saved
@@ -27,8 +28,21 @@ const dbMargin: [number, number] = [15, 15]
 const dbCols = { lg: 12, md: 10, sm: 16, xs: 4, xxs: 2 }
 const dbRowHeight = 25
 
+
+// TODO: fetch data
+const data = [{
+    key: 'a',
+    grid: { x: 0, y: 0, w: 2, h: 5 },
+    type: 'table',
+    data: {
+        headers: ['H1', 'H2'],
+        rows: [['R1', 'R1'], ['R2', 'R2'], ['R3', 'R3']],
+        sum: [1],
+    },
+}]
+
 const getCurrentBreakpoint = () => {
-    const dashboardEl = document.getElementById('dashboard-a')
+    const dashboardEl = document.getElementById('d-123')
     const dashboardWidth = dashboardEl!.clientWidth
 
     let breakpoint = ''
@@ -54,12 +68,53 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
     const [changesDetected, setChangesDetected] = useState(false)
     const [changesFailedToSave, setChangesFailedToSave] = useState(false)
     const [breakpoint, setBreakpoint] = useState('')
+    const { currentUser } = useAuth()
+
+    if (!currentUser) {
+        document.location = '/'
+        return
+    }
 
     const saveChanges = () => {
-        // TODO: add logic
+        const dbEl = document.querySelector('.dbl') as HTMLDivElement
+        let dbContent: any[] = []
+        const dbItems = dbEl.querySelectorAll('.dbl-item')
+        for (let item of dbItems) {
+            let itemKey = item.getAttribute('itemID')
+            let itemGrid = item.getAttribute('data-grid')
+            let itemType = ''
+            let itemData = {}
 
-        setChangesDetected(false)
-        setChangesFailedToSave(false)
+            if (item.getAttribute('itemType') === 'dbtable') {
+                const conversion = handleTableConversion(item.querySelector('table') as HTMLTableElement)
+                itemType = 'table'
+                itemData = {
+                    headers: conversion.tHeaders,
+                    rows: conversion.tRows,
+                    sum: conversion.tSum
+                }
+            }
+
+            dbContent.push({
+                key: itemKey,
+                grid: itemGrid,
+                type: itemType,
+                data: itemData,
+            })
+        }
+
+        const promise = updateDashboardContent(currentUser, dbEl.id, header, subheader ?? '', accentColor, dbContent)
+        promise
+            .then(response => {
+                if (response.error) {
+                    console.error('failed to save dashboard: ' + response.error)
+                    setChangesDetected(true)
+                    setChangesFailedToSave(true)
+                    return
+                }
+                setChangesDetected(false)
+                setChangesFailedToSave(false)
+            })
     }
 
     const handleOnResize = (_layout: ReactGridLayout.Layout[], _oldItem: ReactGridLayout.Layout,
@@ -116,24 +171,34 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
         setChangesDetected(true)
     }
 
+    const handleNewElement = () => {
+
+    }
+
     return (
         <div className='flex flex-col my-3'>
             {/* Info Banner */}
-            {changesDetected && !changesFailedToSave ?
-                <div onClick={() => saveChanges()}
-                    className='self-center w-fit leading-7 tracking-wider text-sm text-center bg-blue-500 text-white rounded-2xl hover:bg-opacity-80 hover:cursor-pointer'>
-                    &nbsp; 💡 Click here to save any changes &nbsp;
-                </div>
-                :
-                changesDetected && changesFailedToSave ?
+            <div className='flex w-full'>
+                {changesDetected && !changesFailedToSave ?
                     <div onClick={() => saveChanges()}
-                        className='self-center w-fit leading-7 tracking-wider text-sm text-center bg-red-700 text-white rounded-2xl hover:bg-opacity-80 hover:cursor-pointer'>
-                        &nbsp; 🫠 Failed to save changes. Click to try again. &nbsp;
+                        className='w-fit leading-7 tracking-wider text-sm text-center bg-blue-500 text-white rounded-2xl hover:bg-opacity-80 hover:cursor-pointer'>
+                        &nbsp; 💡 Click here to save any changes &nbsp;
                     </div>
-                    : null}
+                    :
+                    changesDetected && changesFailedToSave ?
+                        <div onClick={() => saveChanges()}
+                            className='self-center w-fit leading-7 tracking-wider text-sm text-center bg-red-700 text-white rounded-2xl hover:bg-opacity-80 hover:cursor-pointer'>
+                            &nbsp; 🫠 Failed to save changes. Click to try again. &nbsp;
+                        </div>
+                        : null}
+                <button
+                    onClick={() => handleNewElement()}
+                    className='ml-auto mr-2 w-fit leading-7 tracking-wider text-sm'> + new element </button>
+            </div>
+
 
             {/* TODO: dynamically set id and use in getCurrentBreakpoint() */}
-            <div id='dashboard-a' onClick={() => setChangesDetected(true)} className='dbl p-1 rounded-xl bg-transparent'>
+            <div id='d-123' onClick={() => setChangesDetected(true)} className='dbl p-1 rounded-xl bg-transparent'>
                 <div className='flex justify-center'>
                     <label htmlFor='db-color-selector'
                         style={{ backgroundColor: accentColor }}
@@ -156,15 +221,13 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
                     onBreakpointChange={(b, _c) => { setBreakpoint(b) }}
                     onResize={handleOnResize}
                     preventCollision={false}>
-                    <div key='a' data-grid={{ x: 0, y: 0, w: 2, h: 5 }}>
-                        <DashboardTable color={accentColor} />
-                    </div>
-                    <div key='b' data-grid={{ x: 5, y: 0, w: 5, h: 2 }}>
-                        <DashboardTable color={accentColor} />
-                    </div>
-                    <div key='c' data-grid={{ x: 14, y: 0, w: 3, h: 2 }}>
-                        <DashboardTable color={accentColor} />
-                    </div>
+                    {data.map(el =>
+                        el.type === 'table' ?
+                            <div key={el.key} itemID={el.key} data-grid={el.grid} className='dbl-item' itemType='dbtable'>
+                                <DashboardTable elKey={el.key} color={accentColor} headers={el.data.headers} rows={el.data.rows} sum={el.data.sum} />
+                            </div>
+                            : null
+                    )}
                 </ResponsiveGridLayout>
             </div>
         </div>
