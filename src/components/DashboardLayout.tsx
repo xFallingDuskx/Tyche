@@ -5,6 +5,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { DBContentFields, DBContentGrid } from '../pages/HomePage'
 import './DashboardLayout.css'
 import DashboardTable, { handleTableConversion } from './DashboardTable'
+import shortUUID from 'short-uuid'
 
 
 export type DBLayoutProps = {
@@ -56,6 +57,7 @@ const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutPr
     const [dbSubheader, setDbSubheader] = useState(subheader)
     const [editDbHeaders, setEditDbHeaders] = useState(false)
     const [accentColor, setAccentColor] = useState(color)
+    const [dbContent, setDbContent] = useState(content)
     const [changesDetected, setChangesDetected] = useState(false)
     const [changesFailedToSave, setChangesFailedToSave] = useState(false)
     const [breakpoint, setBreakpoint] = useState('')
@@ -89,6 +91,7 @@ const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutPr
                 const conversion = handleTableConversion(item.querySelector('table') as HTMLTableElement)
                 itemType = 'table'
                 itemData = {
+                    title: conversion.tTitle,
                     headers: conversion.tHeaders,
                     rows: conversion.tRows,
                     sum: conversion.tSum
@@ -176,8 +179,21 @@ const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutPr
         setChangesDetected(true)
     }
 
-    const handleNewElement = () => {
 
+    const handleNewElement = () => {
+        const newTable: DBContentFields = {
+            key: shortUUID.generate().toString(),
+            grid: { x: 99999, y: 99999, w: 2, h: 3 },
+            type: 'table',
+            data: {
+                title: 'Title',
+                headers: ['Item', 'Amount ($)'],
+                rows: [['', '']]
+            }
+        }
+        let newDbContent = [...dbContent, newTable]
+        setDbContent(newDbContent)
+        setChangesDetected(true)
     }
 
     return (
@@ -235,10 +251,10 @@ const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutPr
                     onResize={handleOnResize}
                     onLayoutChange={handleOnLayoutChange}
                     preventCollision={false}>
-                    {content.map(el =>
+                    {dbContent.map(el =>
                         el.type === 'table' ?
                             <div key={el.key} itemID={el.key} data-grid={el.grid} className='dbl-item' itemType='dbtable'>
-                                <DashboardTable elKey={el.key} color={accentColor} headers={el.data.headers} rows={el.data.rows} sum={el.data.sum} />
+                                <DashboardTable elKey={el.key} color={accentColor} title={el.data.title} headers={el.data.headers} rows={el.data.rows} sum={el.data.sum} />
                             </div>
                             : null
                     )}

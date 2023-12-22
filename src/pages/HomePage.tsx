@@ -22,6 +22,7 @@ interface DBContent {
     [key: string]: DBContentFields
 }
 type DBFields = {
+    title: string,
     header: string,
     subheader: string,
     color: string,
