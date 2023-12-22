@@ -1,21 +1,23 @@
 import { useState } from 'react'
-import { Responsive, WidthProvider } from 'react-grid-layout'
+import { Layout, Responsive, WidthProvider } from 'react-grid-layout'
 import updateDashboardContent from '../actions/updateDashboardContent'
-import DashboardTable, { handleTableConversion } from './DashboardTable'
-import './DashboardLayout.css'
 import { useAuth } from '../contexts/AuthContext'
+import { DBContentFields, DBContentGrid } from '../pages/HomePage'
+import './DashboardLayout.css'
+import DashboardTable, { handleTableConversion } from './DashboardTable'
 
 
 export type DBLayoutProps = {
+    dbID: string,
     header: string,
     subheader?: string,
     color: string,
+    content: DBContentFields[],
 }
 
 const ResponsiveGridLayout = WidthProvider(Responsive)
 
 /* TODO List:
-   - Fetch current dashboard layout and content
    - Design basic table element (allow horizontal scrolling)
    - Ensure table content can be saved
    - Allow CRUD of layout elements
@@ -27,19 +29,6 @@ const dbBreakpoints = { lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }
 const dbMargin: [number, number] = [15, 15]
 const dbCols = { lg: 12, md: 10, sm: 16, xs: 4, xxs: 2 }
 const dbRowHeight = 25
-
-
-// TODO: fetch data
-const data = [{
-    key: 'a',
-    grid: { x: 0, y: 0, w: 2, h: 5 },
-    type: 'table',
-    data: {
-        headers: ['H1', 'H2'],
-        rows: [['R1', 'R1'], ['R2', 'R2'], ['R3', 'R3']],
-        sum: [1],
-    },
-}]
 
 const getCurrentBreakpoint = () => {
     const dashboardEl = document.getElementById('d-123')
@@ -62,8 +51,7 @@ const getCurrentBreakpoint = () => {
 }
 
 
-
-const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
+const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutProps) => {
     const [dbHeader, setDbHeader] = useState(header)
     const [dbSubheader, setDbSubheader] = useState(subheader)
     const [editDbHeaders, setEditDbHeaders] = useState(false)
@@ -71,6 +59,7 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
     const [changesDetected, setChangesDetected] = useState(false)
     const [changesFailedToSave, setChangesFailedToSave] = useState(false)
     const [breakpoint, setBreakpoint] = useState('')
+    const [dbCurrentLayout, setDbCurrentLayout] = useState<Layout[]>()
     const { currentUser } = useAuth()
 
     if (!currentUser) {
@@ -82,9 +71,17 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
         const dbEl = document.querySelector('.dbl') as HTMLDivElement
         let dbContent: any[] = []
         const dbItems = dbEl.querySelectorAll('.dbl-item')
-        for (let item of dbItems) {
+        dbItems.forEach((item, idx) => {
             let itemKey = item.getAttribute('itemID')
-            let itemGrid = item.getAttribute('data-grid')
+
+            let itemLayout = dbCurrentLayout?.at(idx)
+            let itemGrid: DBContentGrid = {
+                x: itemLayout?.x ?? 0,
+                y: itemLayout?.y ?? 0,
+                w: itemLayout?.w ?? 0,
+                h: itemLayout?.h ?? 0,
+            }
+
             let itemType = ''
             let itemData = {}
 
@@ -104,9 +101,9 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
                 type: itemType,
                 data: itemData,
             })
-        }
+        })
 
-        const promise = updateDashboardContent(currentUser, dbEl.id, dbHeader, dbSubheader ?? '', accentColor, dbContent)
+        const promise = updateDashboardContent(currentUser, dbID, dbHeader, dbSubheader ?? '', accentColor, dbContent)
         promise
             .then(response => {
                 if (response.error) {
@@ -119,6 +116,10 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
                 setChangesFailedToSave(false)
                 setEditDbHeaders(false)
             })
+    }
+
+    const handleOnLayoutChange = (currentLayout: ReactGridLayout.Layout[], _: ReactGridLayout.Layouts) => {
+        setDbCurrentLayout(currentLayout)
     }
 
     const handleOnResize = (_layout: ReactGridLayout.Layout[], _oldItem: ReactGridLayout.Layout,
@@ -202,7 +203,7 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
 
 
             {/* TODO: dynamically set id and use in getCurrentBreakpoint() */}
-            <div id='d-123' onClick={() => setChangesDetected(true)} className='dbl p-1 rounded-xl bg-transparent'>
+            <div id={dbID} onClick={() => setChangesDetected(true)} className='dbl p-1 rounded-xl bg-transparent'>
                 <div className='flex justify-center'>
                     <label htmlFor='db-color-selector'
                         style={{ backgroundColor: accentColor }}
@@ -232,8 +233,9 @@ const DashboardLayout = ({ header, subheader, color }: DBLayoutProps) => {
                     rowHeight={dbRowHeight}
                     onBreakpointChange={(b, _c) => { setBreakpoint(b) }}
                     onResize={handleOnResize}
+                    onLayoutChange={handleOnLayoutChange}
                     preventCollision={false}>
-                    {data.map(el =>
+                    {content.map(el =>
                         el.type === 'table' ?
                             <div key={el.key} itemID={el.key} data-grid={el.grid} className='dbl-item' itemType='dbtable'>
                                 <DashboardTable elKey={el.key} color={accentColor} headers={el.data.headers} rows={el.data.rows} sum={el.data.sum} />
