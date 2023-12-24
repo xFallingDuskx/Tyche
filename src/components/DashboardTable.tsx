@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import './DashboardTable.css'
 
 export type DBTableProps = {
@@ -31,11 +32,35 @@ export const handleTableConversion = (tableEl: HTMLTableElement) => {
 }
 
 const DashboardTable = ({ elKey, color, title, headers, rows, sum }: DBTableProps) => {
+    const [total, setTotal] = useState(0)
+
+    
+
+    useEffect(() => {
+        const table = document.getElementById(`t-${elKey}`) as HTMLTableElement
+        const handleTableSumation = () => {
+            let runningTotal = 0
+            for (let r of table.rows) {
+                let cellValue = parseFloat(r.cells[1].textContent ?? '')
+                if (!Number.isNaN(cellValue)) {
+                    runningTotal += cellValue
+                }
+            }
+            setTotal(runningTotal)
+        }
+        handleTableSumation()
+
+        table.addEventListener('input', () => {
+            handleTableSumation()
+        })
+    }, [])
+    
+
     return (
         <div className='dbt w-full h-full flex flex-col' >
             <table id={`t-${elKey}`} style={{ border: `3px solid ${color}` }} className='flex-grow text-center'>
-                <caption style={{ backgroundColor: color }} 
-                className='text-center text-xl p-1 uppercase font-thin w-full'>
+                <caption style={{ backgroundColor: color }}
+                    className='text-center text-xl p-1 uppercase font-thin w-full'>
                     <div contentEditable suppressContentEditableWarning>{title}</div>
                 </caption>
                 <thead style={{ backgroundColor: color, opacity: 0.7, border: `2px solid ${color}` }}>
@@ -51,6 +76,12 @@ const DashboardTable = ({ elKey, color, title, headers, rows, sum }: DBTableProp
                             )}
                         </tr>)}
                 </tbody>
+                <tfoot style={{ borderTop: `2px solid ${color}` }}>
+                    <tr>
+                        <td>total</td>
+                        <td>${total}</td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     )
