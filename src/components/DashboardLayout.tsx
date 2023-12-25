@@ -69,6 +69,26 @@ const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutPr
         return
     }
 
+    const getCurrentBreakpoint = () => {
+        const dashboardEl = document.getElementById(dbID)
+        const dashboardWidth = dashboardEl!.clientWidth
+    
+        let breakpoint = ''
+        if (dashboardWidth > dbBreakpoints.lg) {
+            breakpoint = 'lg'
+        } else if (dashboardWidth > dbBreakpoints.md) {
+            breakpoint = 'md'
+        } else if (dashboardWidth > dbBreakpoints.sm) {
+            breakpoint = 'sm'
+        } else if (dashboardWidth > dbBreakpoints.xs) {
+            breakpoint = 'xs'
+        } else {
+            breakpoint = 'xxs'
+        }
+    
+        return breakpoint
+    }
+
     const saveChanges = () => {
         const dbEl = document.querySelector('.dbl') as HTMLDivElement
         let dbContent: any[] = []
@@ -183,7 +203,7 @@ const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutPr
     const handleNewElement = () => {
         const newTable: DBContentFields = {
             key: shortUUID.generate().toString(),
-            grid: { x: 99999, y: 99999, w: 2, h: 3 },
+            grid: { x: 99999, y: 99999, w: 2, h: 4 },
             type: 'table',
             data: {
                 title: 'Title',
@@ -249,8 +269,7 @@ const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutPr
                     rowHeight={dbRowHeight}
                     onBreakpointChange={(b, _c) => { setBreakpoint(b) }}
                     onResize={handleOnResize}
-                    onLayoutChange={handleOnLayoutChange}
-                    preventCollision={false}>
+                    onLayoutChange={handleOnLayoutChange}>
                     {dbContent.map(el =>
                         el.type === 'table' ?
                             <div key={el.key} itemID={el.key} data-grid={el.grid} className='dbl-item' itemType='dbtable'>
