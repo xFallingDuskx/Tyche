@@ -68,6 +68,7 @@ const DashboardTable = ({ elKey, color, title, headers, rows, sum }: DBTableProp
 
     return (
         <div className='dbt w-full h-full flex flex-col' >
+            <span className='db-item-drag-handle leading-3 font-extrabold absolute left-2 hover:cursor-move'> : : </span>
             <table id={`t-${elKey}`} style={{ border: `3px solid ${color}` }} className='flex-grow text-center'>
                 <caption style={{ backgroundColor: color }}
                     className='text-center text-xl p-1 uppercase font-thin w-full'>

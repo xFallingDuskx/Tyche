@@ -264,6 +264,7 @@ const DashboardLayout = ({ dbID, header, subheader, color, content }: DBLayoutPr
                 <ResponsiveGridLayout
                     className='layout p-5 pt-0 mb-5'
                     breakpoints={dbBreakpoints}
+                    draggableHandle='.db-item-drag-handle'
                     margin={dbMargin}
                     cols={dbCols}
                     rowHeight={dbRowHeight}
