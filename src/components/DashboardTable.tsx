@@ -50,8 +50,19 @@ const DashboardTable = ({ elKey, color, title, headers, rows, sum }: DBTableProp
         }
         handleTableSumation()
 
+        const deleteEmptyRows = () => {
+            Array.from(table.rows).forEach((r, idx) => {
+                if (r.textContent === '') {
+                    let tempRows = tableRows
+                    tempRows = tempRows.slice(0, idx - 1).concat(tempRows.slice(idx))
+                    setTableRows(tempRows)
+                }
+            })
+        }
+
         table.addEventListener('input', () => {
             handleTableSumation()
+            deleteEmptyRows()
         })
     }, [])
 
