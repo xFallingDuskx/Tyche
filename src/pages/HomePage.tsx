@@ -78,6 +78,9 @@ const HomePage = () => {
         setPage(page + 1)
     }
 
+    const homeBtn = (
+        <button className='animated-btn-2 bg-red-300 my-6 mx-auto material-icons' onClick={() => setPage(0)}> home </button>
+    )
     const prevBtn = (
         <button className='animated-btn-2 bg-red-300 my-6 w-fit mx-auto' onClick={() => setPage(page - 1)}> Prev </button>
     )
@@ -94,6 +97,7 @@ const HomePage = () => {
             {pages[page]}
             <div className='w-full flex'>
                 {page > 0 && page <= pages.length ? prevBtn : null}
+                {page > 0 && page <= pages.length ? homeBtn : null}
                 {page >= 0 && page < pages.length - 1 ? nextBtn : null}
                 {page === pages.length - 1 ? newDashboardBtn : null}
             </div>
