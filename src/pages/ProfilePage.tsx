@@ -64,7 +64,7 @@ const ProfilePage = () => {
             <div className='flat-to-stack h-screen'>
                 <div className='fts-half-content mb-5'>
                     <h1 className='mx-auto text-5xl text-red-700 mb-3'>Hey, {currentUser.displayName}</h1>
-                    <ul className='profile-options'>
+                    <ul id='profile-options-tab'>
                         <li onClick={() => setViewingContent(generalContent)}>General</li>
                         <li onClick={() => setViewingContent(personalInfoContent)}>Personal Information</li>
                         <li onClick={() => setViewingContent(accountMattersContent)}>Account Matters</li>
@@ -76,7 +76,7 @@ const ProfilePage = () => {
                     <button
                         className='animated-btn-2 bg-black !text-red-300 !block my-6 !text-lg !py-1'> Delete Account </button>
                 </div>
-                <div className='fts-half-content'>
+                <div id='profile-details-tab' className='fts-half-content'>
                     {viewingContent ?? placeholderContent}
                 </div>
             </div>

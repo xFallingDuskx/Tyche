@@ -1,3 +1,7 @@
-.profile-options > li {
-    @apply my-3 hover:cursor-pointer
+#profile-options-tab > li {
+    @apply my-3 hover:cursor-pointer !text-2xl hover:text-red-700
+}
+
+#profile-details-tab > h2 {
+    @apply text-3xl
 }
