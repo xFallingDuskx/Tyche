@@ -17,7 +17,7 @@ const handleSignOut = (e: React.MouseEvent<HTMLButtonElement>) => {
 
 
 const ProfilePage = () => {
-    const [viewingContent, setViewingContent] = useState<JSX.Element>(<></>)
+    const [viewingContent, setViewingContent] = useState<JSX.Element|null>(null)
     const { currentUser } = useAuth()
     if (!currentUser) {
         document.location = '/'
@@ -53,12 +53,15 @@ const ProfilePage = () => {
         </>
     )
 
+    const placeholderContent = (
+        <h1 className='brand mt-20 text-center text-8xl h-fit py-4 text-gradient from-black to-red-500 opacity-50'> Tyche </h1>
+    )
 
 
     return (
         <div id='main-container' className='h-screen w-full flex flex-col pb-4'>
             <button className='text-xl mb-2 w-fit' onClick={() => document.location = '/home'}> &lt; Home </button>
-            <div className='flat-to-stack'>
+            <div className='flat-to-stack h-screen'>
                 <div className='fts-half-content mb-5'>
                     <h1 className='mx-auto text-5xl text-red-700 mb-3'>Hey, {currentUser.displayName}</h1>
                     <ul className='profile-options'>
@@ -74,7 +77,7 @@ const ProfilePage = () => {
                         className='animated-btn-2 bg-black !text-red-300 !block my-6 !text-lg !py-1'> Delete Account </button>
                 </div>
                 <div className='fts-half-content'>
-                    {viewingContent}
+                    {viewingContent ?? placeholderContent}
                 </div>
             </div>
         </div>
